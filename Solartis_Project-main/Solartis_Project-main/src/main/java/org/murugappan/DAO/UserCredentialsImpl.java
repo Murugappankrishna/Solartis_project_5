@@ -1,35 +1,38 @@
 package org.murugappan.DAO;
+
 import org.murugappan.repo.JDBC;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserCredentialsImpl implements UserCredentials {
-    JDBC jdbc=new JDBC();
-    Connection con= jdbc.establishConnection();
+    JDBC jdbc = new JDBC();
+    Connection connection = jdbc.establishConnection();
 
 
     @Override
     public void createUserCredentials(String name, String password, String roll) {
-        PreparedStatement preparedStatement;
+        PreparedStatement insertStatement;
         try {
-        	
-            preparedStatement = con.prepareStatement("INSERT INTO user_Credentials (username, password, role) VALUES (?,?,?)");
-            preparedStatement.setString(1,name);
-            preparedStatement.setString(2,password);
-            preparedStatement.setString(3,roll);
-            int rowsInserted = preparedStatement.executeUpdate();
-          
-            if(rowsInserted>=1) {
-            	System.out.println("User Created Successfully1");
+
+            insertStatement = connection.prepareStatement("INSERT INTO user_Credentials (username, password, role) VALUES (?,?,?)");
+            insertStatement.setString(1, name);
+            insertStatement.setString(2, password);
+            insertStatement.setString(3, roll);
+            int rowsInserted = insertStatement.executeUpdate();
+
+            if (rowsInserted >= 1) {
+                System.out.println("User Created Successfully1");
             }
-            
+
         } catch (SQLException e) {
-           e.printStackTrace();
-        }
-        finally {
+            e.printStackTrace();
+        } finally {
 
             try {
-                con.close();
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -40,34 +43,22 @@ public class UserCredentialsImpl implements UserCredentials {
 
     @Override
     public String fetchRole(String name, String password) {
-        PreparedStatement preparedStatement = null;
+        PreparedStatement selectStatement = null;
         try {
-        	
-            preparedStatement = con.prepareStatement("select role from user_Credentials where username= ? AND password = ?");
-        
-            preparedStatement.setString(1,name);
-            preparedStatement.setString(1,name);
-            preparedStatement.setString(2,password);
-            ResultSet rs = preparedStatement.executeQuery();
-           rs.next();
-          
-//            while(rs.next()) {
-//            	
-//                System.out.println(rs.getString(1));
-//            }
-           return rs.getString(1);
+
+            selectStatement = connection.prepareStatement("select role from user_Credentials where username= ? AND password = ?");
+
+            selectStatement.setString(1, name);
+            selectStatement.setString(1, name);
+            selectStatement.setString(2, password);
+            ResultSet rs = selectStatement.executeQuery();
+            rs.next();
+
+
+            return rs.getString(1);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        }
-        finally {
-
-            try {
-                con.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
         }
 
 

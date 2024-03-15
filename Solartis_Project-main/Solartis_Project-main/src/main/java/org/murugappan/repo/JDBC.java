@@ -6,7 +6,7 @@ public class JDBC {
     	
         String url = "jdbc:mysql://localhost:3306/ShopBillingManagement";
         String username = "root";
-        String password = "root";
+        String password = "RDJ.krish1";
         try {
             return DriverManager.getConnection(url,username,password);
         } catch (SQLException e) {

@@ -5,11 +5,11 @@ import java.util.*;
 
 public class TransactionService {
 	TransactionDAO TransactionImpl=new TransactionImpl();
-	Scanner ip = new Scanner(System.in);
+	Scanner input = new Scanner(System.in);
 public void showProfitForAMonth() {
 	
 	System.out.println("Enter The Date To See The Profit Made On That Day");
-	String date=ip.next();
+	String date= input.next();
 	System.out.println(TransactionImpl.fetchProfitByDate(date));
 	
 }

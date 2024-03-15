@@ -2,12 +2,12 @@ package org.murugappan.service;
 import org.murugappan.model.*;
 
 public class HashService {
-    UserCredentials uc;
-    public HashService(UserCredentials uc) {
-        this.uc = uc;
+    UserCredentials userCredentials;
+    public HashService(UserCredentials userCredentials) {
+        this.userCredentials = userCredentials;
     }
     public void hashPassword(){
-        uc.usercredentials.put("Password", Integer.toString((uc.usercredentials.get("Password")).hashCode()));
+        userCredentials.userCredentials.put("Password", Integer.toString((userCredentials.userCredentials.get("Password")).hashCode()));
     }
 
 

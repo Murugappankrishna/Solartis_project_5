@@ -1,15 +1,15 @@
 package org.murugappan.DAO;
 import java.sql.ResultSet;
 public interface CartDAO {
- void addToCart(Integer userid, Integer productid, Integer quantity);
+ void addToCart(Integer userId, Integer productId, Integer quantity);
 
-void showCart(Integer userid);
-void deleteCart(int userid);
-public ResultSet createPDF(int userid);
+ void showCart(Integer userId);
+ void deleteCart(int userId);
+ public ResultSet createPDF(int userId);
 
-String getUserName(Integer userid);
+ String getUserName(Integer userId);
 
-void updateQuantity();
+ void updateQuantity();
 
-int checkQuantity(Integer quantity,Integer productID);
+ int checkQuantity(Integer quantity,Integer productID);
 }

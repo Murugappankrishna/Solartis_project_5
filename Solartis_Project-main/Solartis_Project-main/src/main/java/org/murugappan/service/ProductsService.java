@@ -6,47 +6,47 @@ import org.murugappan.model.ProductDetails;
 import java.util.Scanner;
 
 public class ProductsService {
-    ProductDetails pd=new ProductDetails();
-    ProductsDAO pdi=new ProductsImpl();
+    ProductDetails details =new ProductDetails();
+    ProductsDAO productsImplementation =new ProductsImpl();
     
-    Scanner ip = new Scanner(System.in);
+    Scanner input = new Scanner(System.in);
     public void addProduct(){
     	
 
 
         System.out.println("Enter The Product Name");
-        pd.productdetails.put("ProductName",ip.next());
+        details.productDetails.put("ProductName", input.next());
         System.out.println("Enter The Cost  Price");
-        pd.productdetails.put("CostPrice",ip.next());
+        details.productDetails.put("CostPrice", input.next());
         System.out.println("Enter The Selling Price");
-        pd.productdetails.put("SellingPrice", ip.next());
+        details.productDetails.put("SellingPrice", input.next());
         System.out.println("Enter The StockNo");
-        pd.productdetails.put("Stock", ip.next());
-        System.out.println("Enter The Product Decription");
-        pd.productdetails.put("Description", ip.next());
+        details.productDetails.put("Stock", input.next());
+        System.out.println("Enter The Product Description");
+        details.productDetails.put("Description", input.next());
         System.out.println("Enter The Tax Percent");
-        pd.productdetails.put("Tax",ip.next());
-        pdi.addProducts(pd.productdetails.get("ProductName"),pd.productdetails.get("Description"),Integer.parseInt(pd.productdetails.get("CostPrice")),Integer.parseInt(pd.productdetails.get("SellingPrice")),Integer.parseInt(pd.productdetails.get("Stock")),Integer.parseInt(pd.productdetails.get("Tax")));
+        details.productDetails.put("Tax", input.next());
+        productsImplementation.addProducts(details.productDetails.get("ProductName"), details.productDetails.get("Description"),Integer.parseInt(details.productDetails.get("CostPrice")),Integer.parseInt(details.productDetails.get("SellingPrice")),Integer.parseInt(details.productDetails.get("Stock")),Integer.parseInt(details.productDetails.get("Tax")));
 
     }
     public void deleteProduct(){
         System.out.println("Enter The ProductId To Be Deleted");
-        int produuctid= ip.nextInt();
-        pdi.deleteProduct(produuctid);
+        int produuctId= input.nextInt();
+        productsImplementation.deleteProduct(produuctId);
     }
 	public void showProducts() {
-		System.out.println("Here The List of Availabe Products In the Inventory!");
+		System.out.println("Here The List of Available Products In the Inventory!");
 		System.out.println();
-		pdi.showProducts();
+		productsImplementation.showProducts();
 	}
 	public void editProducts() {
 		System.out.println("Enter the Detail To Be Edited \n1.Edit Product Name\n2.Edit Product Selling Price \n3.Edit Cost Price \n4.Edit Product Description \n5.Edit The Total Stock \n6. Edit The Tax Percent ");		
-		String choice=(ip.nextLine()).toUpperCase();
-		String columnToUpdate=null;
+		String choice=(input.nextLine()).toUpperCase();
+		String columnToUpdate = null;
 		System.out.println("Enter the product ID");
-		int product_id=ip.nextInt();
+		int productId= input.nextInt();
 		System.out.println("Enter The New Value Which To Be Updated");
-		String newvalue=ip.next();
+		String newValue= input.next();
 		
 ;		if(choice.equals("PRODUCT NAME"))
 			columnToUpdate="product_name";
@@ -61,8 +61,8 @@ public class ProductsService {
 		else if(choice.equals("TAX PERCENT"))
 			columnToUpdate="Tax_Percent";
 		else
-			System.out.println("Enetr A Valid Choise");
-		pdi.editProduct(columnToUpdate,product_id,newvalue);
+			System.out.println("Enter A Valid Choice");
+		productsImplementation.editProduct(columnToUpdate,productId,newValue);
 	
 	}
 	

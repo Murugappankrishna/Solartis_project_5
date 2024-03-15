@@ -1,10 +1,10 @@
 package org.murugappan.DAO;
 
 public interface ProductsDAO {
-    void addProducts(String productname,String description,int costprice,int sellingprice , int stock,int tax);
-    void deleteProduct(int productid);
+    void addProducts(String productName,String description,int costPrice,int sellingPrice , int stock,int tax);
+    void deleteProduct(int productId);
 	void showProducts();
-	void editProduct(String columnToUpdate, int product_id,String newvalue);
+	void editProduct(String columnToUpdate, int productId,String newValue);
 	String showLowStockItems();
 
 }

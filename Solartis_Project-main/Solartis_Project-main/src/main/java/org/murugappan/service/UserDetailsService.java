@@ -1,47 +1,47 @@
 package org.murugappan.service;
-import org.murugappan.DAO.*;
+
+import org.murugappan.DAO.UserCredentialsImpl;
 import org.murugappan.model.UserCredentials;
-
-
 
 import java.util.Scanner;
 
 public class UserDetailsService {
-    UserCredentials uc=new UserCredentials();
+    UserCredentials credentials = new UserCredentials();
+    HashService hashService = new HashService(credentials);
+    UserCredentialsImpl userCredentialsImplementation = new UserCredentialsImpl();
+    Scanner input = new Scanner(System.in);
 
-    Scanner ip=new Scanner(System.in);
 
-
-
-    public String  fetchRole()  {
-    	String userRoll;
+    public String fetchRole() {
+        String userRoll;
         System.out.println("Enter Your Name");
-        String name=ip.next();
+        String name = input.next();
         System.out.println("Enter Your Password");
-        ip.next();
+        input.next();
         System.out.println("ReEnter Your Password");
-        String password=ip.next();
+        String password = input.next();
         System.out.println("Validating....");
         System.out.println("------------------");
         System.out.println("------------------");
-        UserCredentialsImpl uci=new UserCredentialsImpl();
-        userRoll= uci.fetchRole(name,Integer.toString(password.hashCode()));
+        UserCredentialsImpl userCredentialImplementation = new UserCredentialsImpl();
+        userRoll = userCredentialImplementation.fetchRole(name, Integer.toString(password.hashCode()));
         return userRoll;
 
     }
-    public void createUser()  {
 
-        HashService hs=new HashService(uc);
+    public void createUser() {
+
+
         System.out.println("Enter Your Name");
-        uc.usercredentials.put("Name",ip.next());
+        credentials.userCredentials.put("Name", input.next());
 
         System.out.println("Enter Your Password");
-        uc.usercredentials.put("Password",ip.next());
+        credentials.userCredentials.put("Password", input.next());
         System.out.println("Enter Your Roll");
-        uc.usercredentials.put("Roll",ip.next());
-        hs.hashPassword();
-        UserCredentialsImpl uci=new UserCredentialsImpl();
-        uci.createUserCredentials(uc.usercredentials.get("Name"),uc.usercredentials.get("Password"),uc.usercredentials.get("Roll"));
+        credentials.userCredentials.put("Roll", input.next());
+        hashService.hashPassword();
+
+        userCredentialsImplementation.createUserCredentials(credentials.userCredentials.get("Name"), credentials.userCredentials.get("Password"), credentials.userCredentials.get("Roll"));
     }
 
 }

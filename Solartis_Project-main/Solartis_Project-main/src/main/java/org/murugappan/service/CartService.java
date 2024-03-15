@@ -9,49 +9,49 @@ import org.murugappan.DAO.*;
 
 public class CartService {
 	Cart cart= new Cart();
-	Scanner ip=new Scanner(System.in);
-	CartDAO cdi = new CartImpl();
-	TransactionDAO tdi=new TransactionImpl();
-	CreatePDF cpdf=new CreatePDF();
+	Scanner input =new Scanner(System.in);
+	CartDAO cartImplementation = new CartImpl();
+	TransactionDAO transactionImplementation =new TransactionImpl();
+	CreatePDF createPDF =new CreatePDF();
 	MailService mailService=new MailService();
 	
 	public void addToCart() {
 		
 		int flag;
 		String isBilling;
-		String modeofpayment;
+		String modePayment;
 		System.out.println("Enter The Products To Be Added TO The Cart");	
 		System.out.println("Enter The User ID ");
-		cart.usercart.put("UserID", ip.nextInt());
+		cart.userCart.put("UserID", input.nextInt());
 		do {
 		System.out.println("Enter THe Product ID To Be Added In The Cart");
-		cart.usercart.put("ProductID", ip.nextInt());
+		cart.userCart.put("ProductID", input.nextInt());
 		System.out.println("Enter The Quantiy Needed");
-		cart.usercart.put("Quantity", ip.nextInt());
-		int quantityresult=cdi.checkQuantity(cart.usercart.get("Quantity"),cart.usercart.get("ProductID"));
-		if(cart.usercart.get("Quantity")>quantityresult) {
+		cart.userCart.put("Quantity", input.nextInt());
+		int quantityResult= cartImplementation.checkQuantity(cart.userCart.get("Quantity"),cart.userCart.get("ProductID"));
+		if(cart.userCart.get("Quantity")>quantityResult) {
 			System.out.println("We Are Sorry..! We Are Running Out Of Stcok");
 		}
 		else {
-		cdi.addToCart(cart.usercart.get("UserID"),cart.usercart.get("ProductID"),cart.usercart.get("Quantity"));
+		cartImplementation.addToCart(cart.userCart.get("UserID"),cart.userCart.get("ProductID"),cart.userCart.get("Quantity"));
 		}
 		System.out.print("Do Want More Products To Be added Enter 1 Else 2");
-		flag=ip.nextInt();
+		flag= input.nextInt();
 		}while(flag==1);
 		System.out.println("Yoru Products Has Been Added");
-		cdi.showCart(cart.usercart.get("UserID"));
-		System.out.println("DO Want To Procede To Billing Section Enter YES else NO");
-		isBilling=ip.next().toUpperCase();
+		cartImplementation.showCart(cart.userCart.get("UserID"));
+		System.out.println("DO Want To Proceed To Billing Section Enter YES else NO");
+		isBilling= input.next().toUpperCase();
 		if(isBilling.equals("YES")) {
-			System.out.println("Say Your Choise of Payment Mode");
-			modeofpayment=ip.next().toUpperCase();
-			String userName=cdi.getUserName(cart.usercart.get("UserID"));
-			cpdf.createInvoice(cart.usercart.get("UserID"), modeofpayment,userName);
-			cdi.updateQuantity();
+			System.out.println("Say Your Choice of Payment Mode");
+			modePayment= input.next().toUpperCase();
+			String userName= cartImplementation.getUserName(cart.userCart.get("UserID"));
+			createPDF.createInvoice(cart.userCart.get("UserID"), modePayment,userName);
+			cartImplementation.updateQuantity();
 			
 			mailService.sendMail();
-			tdi.insertData(modeofpayment);
-			cdi.deleteCart(cart.usercart.get("UserID"));
+			transactionImplementation.insertData(modePayment);
+			cartImplementation.deleteCart(cart.userCart.get("UserID"));
 		
 		}
 		

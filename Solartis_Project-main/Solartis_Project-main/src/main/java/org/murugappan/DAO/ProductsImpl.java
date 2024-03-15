@@ -2,42 +2,37 @@ package org.murugappan.DAO;
 
 import org.murugappan.repo.JDBC;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class ProductsImpl implements ProductsDAO {
-    JDBC jdbc=new JDBC();
-    Connection con= jdbc.establishConnection();
-    PreparedStatement preparedStatement;
-    Statement selectStatement;
+    JDBC jdbc = new JDBC();
+    Connection connection = jdbc.establishConnection();
+   // PreparedStatement preparedStatement;
+    //Statement selectStatement;
 
     @Override
-    public void addProducts(String productname,String description,int costprice,int sellingprice,int stock,int tax) {
-
+    public void addProducts(String productName, String description, int costPrice, int sellingPrice, int stock, int tax) {
+        PreparedStatement insertStatement;
         try {
-            preparedStatement = con.prepareStatement("INSERT INTO product_details (product_name, product_des, cost_price, selling_price, Stock,Tax_Percent) VALUES(?,?,?,?,?,?)"
-       );
-            preparedStatement.setString(1,productname);
-            preparedStatement.setString(2,description);
-            preparedStatement.setInt(3,costprice);
-            preparedStatement.setInt(4,sellingprice);
-            preparedStatement.setInt(5,stock);
-            preparedStatement.setInt(6, tax);
-            int rowsInserted = preparedStatement.executeUpdate();
-            if(rowsInserted>=1) {
-            	System.out.println("Product Added Successfully!");
+            insertStatement = connection.prepareStatement("INSERT INTO product_details (product_name, product_des, cost_price, selling_price, Stock,Tax_Percent) VALUES(?,?,?,?,?,?)"
+            );
+            insertStatement.setString(1, productName);
+            insertStatement.setString(2, description);
+            insertStatement.setInt(3, costPrice);
+            insertStatement.setInt(4, sellingPrice);
+            insertStatement.setInt(5, stock);
+            insertStatement.setInt(6, tax);
+            int rowsInserted = insertStatement.executeUpdate();
+            if (rowsInserted >= 1) {
+                System.out.println("Product Added Successfully!");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
 
             try {
-                con.close();
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
 
@@ -48,12 +43,13 @@ public class ProductsImpl implements ProductsDAO {
 
     @Override
     public void deleteProduct(int productid) {
+        PreparedStatement deleteStatement;
         try {
-            preparedStatement = con.prepareStatement("DELETE FROM product_details WHERE product_id = ?");
-            preparedStatement.setInt(1,productid);
-            int rowsAffected = preparedStatement.executeUpdate();
-            if(rowsAffected>=1) {
-            	System.out.println("Procuct Deleted Successfully!");
+            deleteStatement = connection.prepareStatement("DELETE FROM product_details WHERE product_id = ?");
+            deleteStatement.setInt(1, productid);
+            int rowsAffected = deleteStatement.executeUpdate();
+            if (rowsAffected >= 1) {
+                System.out.println("Procuct Deleted Successfully!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,75 +57,76 @@ public class ProductsImpl implements ProductsDAO {
 
     }
 
-	@Override
-	public void showProducts() {
-		try {
-			  selectStatement = con.createStatement();
-			 ResultSet rs = selectStatement.executeQuery("select*from product_details");
-			 System.out.printf("%-15s%-20s%-20s%-15s%-15s%-10s%-10s%n", 
-					    "Product ID", "Product Name", "Product Description", 
-					    "Cost Price", "Selling Price", "Stock", "Tax Percent");
+    @Override
+    public void showProducts() {
+        Statement selectStatement;
+        try {
+            selectStatement = connection.createStatement();
+            ResultSet rs = selectStatement.executeQuery("select*from product_details");
+            System.out.printf("%-15s%-20s%-20s%-15s%-15s%-10s%-10s%n",
+                    "Product ID", "Product Name", "Product Description",
+                    "Cost Price", "Selling Price", "Stock", "Tax Percent");
 
-		      System.out.println("--------------------------------------------------------------------------------------------------------");
-		      System.out.println("--------------------------------------------------------------------------------------------------------");
-			 while (rs.next()) {
-	                int productId = rs.getInt("product_id");
-	                String productName = rs.getString("product_name");
-	                String productDes = rs.getString("product_des");
-	                int costPrice = rs.getInt("cost_price");
-	                int sellingPrice = rs.getInt("selling_price");
-	                int stock = rs.getInt("Stock");
-	                int tax=rs.getInt("Tax_Percent");
-	                
+            System.out.println("--------------------------------------------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------------------------------------");
+            while (rs.next()) {
+                int productId = rs.getInt("product_id");
+                String productName = rs.getString("product_name");
+                String productDes = rs.getString("product_des");
+                int costPrice = rs.getInt("cost_price");
+                int sellingPrice = rs.getInt("selling_price");
+                int stock = rs.getInt("Stock");
+                int tax = rs.getInt("Tax_Percent");
 
-	                System.out.printf("%-15d%-20s%-25s%-15d%-15d%-10d%-10d%n", 
-	                        productId, productName, productDes, costPrice, sellingPrice, stock, tax);
-	                
-	            }
-				 
-			 
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
 
-	}
+                System.out.printf("%-15d%-20s%-25s%-15d%-15d%-10d%-10d%n",
+                        productId, productName, productDes, costPrice, sellingPrice, stock, tax);
 
-	@Override
-	public void editProduct(String columnToUpdate, int product_id,String newvalue) {
-
-		 try {
-			preparedStatement = con.prepareStatement("UPDATE product_details SET " + columnToUpdate + " = ? WHERE product_id = ?");
-			preparedStatement.setString(1, newvalue);
-            preparedStatement.setInt(2, product_id);
-            int rowsAffected = preparedStatement.executeUpdate();
-            if(rowsAffected>=1) {
-            	System.out.println("Product Edited Successfully!");
             }
-				       
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-	}
 
-	@Override
-	public String showLowStockItems() {
-		 String listProducts="";
-		try {
-			 selectStatement = con.createStatement();
-			 ResultSet rs = selectStatement.executeQuery("select product_name from product_details where Stock<20");
-			 while(rs.next()) {
-				  listProducts+=(rs.getString("product_name"))+"</br>";
-				  
-			 }
-			
-			 return listProducts;
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-			return listProducts;
-		}
-		
-	}
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void editProduct(String columnToUpdate, int product_id, String newvalue) {
+        PreparedStatement updateStatement;
+
+        try {
+            updateStatement = connection.prepareStatement("UPDATE product_details SET " + columnToUpdate + " = ? WHERE product_id = ?");
+            updateStatement.setString(1, newvalue);
+            updateStatement.setInt(2, product_id);
+            int rowsAffected = updateStatement.executeUpdate();
+            if (rowsAffected >= 1) {
+                System.out.println("Product Edited Successfully!");
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String showLowStockItems() {
+        String listProducts = "";
+        Statement selectStatement;
+        try {
+            selectStatement = connection.createStatement();
+            ResultSet rs = selectStatement.executeQuery("select product_name from product_details where Stock<20");
+            while (rs.next()) {
+                listProducts += (rs.getString("product_name")) + "</br>";
+
+            }
+
+            return listProducts;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return listProducts;
+        }
+
+    }
 }
