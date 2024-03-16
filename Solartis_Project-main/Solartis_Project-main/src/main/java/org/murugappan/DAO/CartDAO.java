@@ -9,6 +9,7 @@ public interface CartDAO {
 
     void deleteCart(int userId);
 
+
     ResultSet generateBillPDF(int userId);
 
     String getUserName(Integer userId);
