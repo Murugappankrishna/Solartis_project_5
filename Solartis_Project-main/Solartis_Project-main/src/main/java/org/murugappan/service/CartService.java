@@ -26,11 +26,11 @@ public class CartService {
 		do {
 		System.out.println("Enter THe Product ID To Be Added In The Cart");
 		cart.userCart.put("ProductID", input.nextInt());
-		System.out.println("Enter The Quantiy Needed");
+		System.out.println("Enter The Quantify Needed");
 		cart.userCart.put("Quantity", input.nextInt());
-		int quantityResult= cartImplementation.checkQuantity(cart.userCart.get("Quantity"),cart.userCart.get("ProductID"));
+		int quantityResult= cartImplementation.checkProductQuantity(cart.userCart.get("Quantity"),cart.userCart.get("ProductID"));
 		if(cart.userCart.get("Quantity")>quantityResult) {
-			System.out.println("We Are Sorry..! We Are Running Out Of Stcok");
+			System.out.println("We Are Sorry..! We Are Running Out Of Stock");
 		}
 		else {
 		cartImplementation.addToCart(cart.userCart.get("UserID"),cart.userCart.get("ProductID"),cart.userCart.get("Quantity"));
@@ -38,7 +38,7 @@ public class CartService {
 		System.out.print("Do Want More Products To Be added Enter 1 Else 2");
 		flag= input.nextInt();
 		}while(flag==1);
-		System.out.println("Yoru Products Has Been Added");
+		System.out.println("Your Products Has Been Added");
 		cartImplementation.showCart(cart.userCart.get("UserID"));
 		System.out.println("DO Want To Proceed To Billing Section Enter YES else NO");
 		isBilling= input.next().toUpperCase();
@@ -47,7 +47,7 @@ public class CartService {
 			modePayment= input.next().toUpperCase();
 			String userName= cartImplementation.getUserName(cart.userCart.get("UserID"));
 			createPDF.createInvoice(cart.userCart.get("UserID"), modePayment,userName);
-			cartImplementation.updateQuantity();
+			cartImplementation.updateProductQuantity();
 			
 			mailService.sendMail();
 			transactionImplementation.insertData(modePayment);

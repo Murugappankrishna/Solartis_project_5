@@ -69,7 +69,7 @@ public class CartImpl implements CartDAO {
 
     }
 
-    public ResultSet createPDF(int userId) {
+    public ResultSet generateBillPDF(int userId) {
         ResultSet rs = null;
         try {
             PreparedStatement selectQuery = connection.prepareStatement("SELECT" + "  u.username, " + "  pd.product_name," + "  c.quantity," + "  pd.selling_price AS unit_price," + "  pd.Tax_Percent AS tax_percent," + "  (pd.selling_price * c.quantity) AS total_price_before_tax," + "  (" + "    (pd.selling_price * c.quantity)* pd.Tax_Percent / 100" + "  ) AS tax_amount, " + "  (" + "    (pd.selling_price * c.quantity) + (" + "      pd.selling_price * c.quantity * pd.Tax_Percent / 100" + "    )" + "  ) AS price_inclusive_of_tax " + "FROM " + "  cart c " + "  JOIN users u ON c.user_id = u.user_id " + "  JOIN product_details pd ON c.product_id = pd.product_id " + "WHERE " + "  u.user_id = ?");
@@ -118,7 +118,7 @@ public class CartImpl implements CartDAO {
     }
 
     @Override
-    public void updateQuantity() {
+    public void updateProductQuantity() {
         try {
 
             PreparedStatement selectQuery = connection.prepareStatement("SELECT product_id FROM cart");
@@ -147,7 +147,7 @@ public class CartImpl implements CartDAO {
     }
 
     @Override
-    public int checkQuantity(Integer quantity, Integer productID) {
+    public int checkProductQuantity(Integer quantity, Integer productID) {
         try {
             PreparedStatement selectQuery = connection.prepareStatement("select Stock from product_details where product_id=?");
             selectQuery.setInt(1, productID);

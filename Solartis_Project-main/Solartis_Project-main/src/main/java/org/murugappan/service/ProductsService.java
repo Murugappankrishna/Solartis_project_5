@@ -31,8 +31,8 @@ public class ProductsService {
     }
     public void deleteProduct(){
         System.out.println("Enter The ProductId To Be Deleted");
-        int produuctId= input.nextInt();
-        productsImplementation.deleteProduct(produuctId);
+        int productId= input.nextInt();
+        productsImplementation.deleteProduct(productId);
     }
 	public void showProducts() {
 		System.out.println("Here The List of Available Products In the Inventory!");
@@ -47,21 +47,16 @@ public class ProductsService {
 		int productId= input.nextInt();
 		System.out.println("Enter The New Value Which To Be Updated");
 		String newValue= input.next();
-		
-;		if(choice.equals("PRODUCT NAME"))
-			columnToUpdate="product_name";
-		else if(choice.equals("SELLING PRICE"))
-			columnToUpdate="selling_price";
-		else if(choice.equals("COST PRICE"))
-			columnToUpdate="cost_price";
-		else if(choice.equals("STOCK"))
-			columnToUpdate="Stock";
-		else if(choice.equals("PRODUCT DESCRIPTION"))
-			columnToUpdate="product_des";
-		else if(choice.equals("TAX PERCENT"))
-			columnToUpdate="Tax_Percent";
-		else
-			System.out.println("Enter A Valid Choice");
+
+        switch (choice) {
+            case "PRODUCT NAME" -> columnToUpdate = "product_name";
+            case "SELLING PRICE" -> columnToUpdate = "selling_price";
+            case "COST PRICE" -> columnToUpdate = "cost_price";
+            case "STOCK" -> columnToUpdate = "Stock";
+            case "PRODUCT DESCRIPTION" -> columnToUpdate = "product_des";
+            case "TAX PERCENT" -> columnToUpdate = "Tax_Percent";
+            default -> System.out.println("Enter A Valid Choice");
+        }
 		productsImplementation.editProduct(columnToUpdate,productId,newValue);
 	
 	}

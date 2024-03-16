@@ -7,8 +7,6 @@ import java.sql.*;
 public class ProductsImpl implements ProductsDAO {
     JDBC jdbc = new JDBC();
     Connection connection = jdbc.establishConnection();
-   // PreparedStatement preparedStatement;
-    //Statement selectStatement;
 
     @Override
     public void addProducts(String productName, String description, int costPrice, int sellingPrice, int stock, int tax) {
@@ -42,14 +40,14 @@ public class ProductsImpl implements ProductsDAO {
     }
 
     @Override
-    public void deleteProduct(int productid) {
+    public void deleteProduct(int productId) {
         PreparedStatement deleteStatement;
         try {
             deleteStatement = connection.prepareStatement("DELETE FROM product_details WHERE product_id = ?");
-            deleteStatement.setInt(1, productid);
+            deleteStatement.setInt(1, productId);
             int rowsAffected = deleteStatement.executeUpdate();
             if (rowsAffected >= 1) {
-                System.out.println("Procuct Deleted Successfully!");
+                System.out.println("Product Deleted Successfully!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,13 +90,13 @@ public class ProductsImpl implements ProductsDAO {
     }
 
     @Override
-    public void editProduct(String columnToUpdate, int product_id, String newvalue) {
+    public void editProduct(String columnToUpdate, int productId, String newValue) {
         PreparedStatement updateStatement;
 
         try {
             updateStatement = connection.prepareStatement("UPDATE product_details SET " + columnToUpdate + " = ? WHERE product_id = ?");
-            updateStatement.setString(1, newvalue);
-            updateStatement.setInt(2, product_id);
+            updateStatement.setString(1, newValue);
+            updateStatement.setInt(2, productId);
             int rowsAffected = updateStatement.executeUpdate();
             if (rowsAffected >= 1) {
                 System.out.println("Product Edited Successfully!");

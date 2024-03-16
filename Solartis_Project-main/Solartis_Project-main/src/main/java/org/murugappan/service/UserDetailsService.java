@@ -11,7 +11,6 @@ public class UserDetailsService {
     UserCredentialsImpl userCredentialsImplementation = new UserCredentialsImpl();
     Scanner input = new Scanner(System.in);
 
-
     public String fetchRole() {
         String userRoll;
         System.out.println("Enter Your Name");

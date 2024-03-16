@@ -24,11 +24,10 @@ public class CreatePDF {
     CartDAO ci=new CartImpl();
 
     void createInvoice(int userid,String modeOfPayment,String UserName) {
-        ResultSet rs=ci.createPDF(userid);
+        ResultSet rs=ci.generateBillPDF(userid);
        
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime=LocalTime.now();
-        String username = null;
         double totalBeforeTax = 0.0;
         int totalQuantity = 0;
         double totalPriceInclusiveOfTax = 0.0;
@@ -79,7 +78,7 @@ public class CreatePDF {
             PdfDocument pdfDoc = new PdfDocument(writer);
             document = new Document(pdfDoc);
             PageSize pageSize = pdfDoc.getDefaultPageSize();
-            Paragraph paragraph = new Paragraph("GSTIN:32AAHCR7467A1ZI              TaxInvoice                   OriginalRecepient");
+            Paragraph paragraph = new Paragraph("GSTIN:32AAHCR7467A1ZI              TaxInvoice                   OriginalRecipient");
             paragraph.setMarginBottom(0);
             paragraph.setMarginTop(0);
             paragraph.setTextAlignment(TextAlignment.CENTER);
@@ -126,7 +125,7 @@ public class CreatePDF {
             table2.setMarginBottom(0);
             table2.setMarginTop(0);
             table2.setWidth(UnitValue.createPercentValue(100));
-            table2.addCell(new Cell().add(new Paragraph("Terms and Conditions\n 1. Subject To Kanchipuram Jurisdiction E.&O.E.\n2. Items once sold cannot be returned.\n3. Any Warranty Claim will Not BE Accepeted Without Warrenty Card ")));
+            table2.addCell(new Cell().add(new Paragraph("Terms and Conditions\n 1. Subject To Kanchipuram Jurisdiction E.&O.E.\n2. Items once sold cannot be returned.\n3. Any Warranty Claim will Not BE Accepted Without Warranty Card ")));
             table2.addCell(new Cell().add(new Paragraph("\n\n\nReceiver's Signature").setBold()));
             table2.addCell(new Cell().add(new Paragraph("\n\n\nAuthorized Signature").setBold()));
             document.add(table2);
