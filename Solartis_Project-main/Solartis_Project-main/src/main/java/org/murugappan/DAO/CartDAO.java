@@ -14,7 +14,7 @@ public interface CartDAO {
 
     String getUserName(Integer userId);
 
-    void updateProductQuantity();
+       void updateProductQuantity();
 
     int checkProductQuantity(Integer quantity, Integer productID);
 }
